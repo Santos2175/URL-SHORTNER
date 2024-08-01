@@ -2,9 +2,13 @@ require('dotenv').config()
 
 const express = require('express')
 const path = require('path')
+const cookieParser = require('cookie-parser')
 
 const urlRoute = require('./routes/url');
 const staticRoute = require('./routes/staticRoutes')
+const userRoute = require('./routes/user')
+
+const {restrictToLoggedInUserOnly, checkAuth} = require('./middlewares/auth')
 
 const { connectToMongoDB } = require('./connect');
 const URL = require('./models/url')
@@ -24,10 +28,12 @@ app.set("views", path.resolve('./views'))
 //middlewares
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
+app.use(cookieParser())
 
 //Routes
-app.use('/url', urlRoute)
-app.use('/', staticRoute)
+app.use('/url',restrictToLoggedInUserOnly, urlRoute)
+app.use('/',checkAuth, staticRoute)
+app.use('/user', userRoute)
 
 app.get('/test', (req,res)=>{
     return res.render('home')

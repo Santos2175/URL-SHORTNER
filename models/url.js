@@ -10,7 +10,11 @@ const urlSchema = new Schema({
         type:String,
         required:true
     },
-    visitHistory:[{timestamps:{type:Number}}]
+    visitHistory:[{timestamps:{type:Number}}],
+    createdBy:{
+        type:Schema.Types.ObjectId,
+        ref:'users'
+    }
 },{timestamps:true})
 
 const URL = model('url', urlSchema)
