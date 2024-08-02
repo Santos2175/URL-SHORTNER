@@ -6,9 +6,13 @@ const router = Router()
 
 router.get('/',async (req,res)=>{
     if(!req.user) return res.redirect('/login')
+
+    const user = req.user
+    console.log(user)
     const allUrls = await Url.find({createdBy:req.user._id})
     return res.render('home',{
-        urls:allUrls
+        urls:allUrls,
+        user
     })
 })
 

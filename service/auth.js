@@ -6,7 +6,8 @@ function setUser(user){
     //sessionIdToUserMap.set(id,user);
     return jwt.sign({
         _id:user._id,
-        email:user.email
+        email:user.email,
+        name:user.name
     },process.env.SECRET_KEY)
 }
 
